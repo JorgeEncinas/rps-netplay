@@ -27,3 +27,5 @@ tienen que redirigir el puerto 9000 a la computadora que tenga el programar serv
 
 Pueden modificar el programa server.py si lo creen necesario.
 Los archivos (server.py y client.py) se encuentran en el Apartado Files o Archivos.
+
+![criterios](/criterios/criterios1.PNG)
