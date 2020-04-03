@@ -1,74 +1,89 @@
 #!/usr/bin/python
 import xmlrpc.client
 import argparse
+import threading
 
 def despliega_menu():
     print("MENU")
-    print("1.Iniciar jugada")
-    print("2.Preguntar si hay más jugadores")
-    print("3.Crear partida") #Cambie mostrar partida por Crear partida, no se puede jugar si no se presiona 3 antes.
-    print("4.jugar")
-    print("0.Salir")
+    print("1. Iniciar jugada")
+    print("2. ¿Quiénes están jugando?")
+    print("3. Crear partida") #Cambié mostrar partida por Crear partida, no se puede jugar si no se presiona 3 antes.
+    print("4. jugar")
+    print("6. Quiero otro nombre")
+    print("0. Salir")
     o = input("Opcion:>")
     return int(o)
 
-def RPS(manita, manota):
-    ganador=""
-    if (manita[1]==manota[1]): ganador="EMPATE"
-
-    if (manita[1] == 'Piedra' and manota[1] == 'Papel'): ganador = manota[0]
-    if (manita[1] == 'Piedra' and manota[1] == 'Tijera'): ganador = manita[0]
-
-    if (manita[1] == 'Papel' and manota[1] == 'Piedra'): ganador = manita[0]
-    if (manita[1] == 'Papel' and manota[1] == 'Tijera'): ganador = manota[0]
-
-    if (manita[1] == 'Tijera' and manota[1] == 'Piedra'): ganador = manota[0]
-    if (manita[1] == 'Tijera' and manota[1] == 'Papel'): ganador = manita[0]
-
-    return ganador
-
-
-def juez(jugadores, proxy):
-    #en el diccionario el nombre del jugador se representa como j y su jugada es jugadores[j])
-    tuplas=jugadores.items()
-    participes=[]
-    for j in tuplas:
-        participes.append(j)
-    winner=RPS(participes[0], participes[1])
-    #Para juegos de muchos jugadores  se podria llamar RPS dentro de un loop????
-    print("EL GANADOR ES... ", winner)
-
-    if (winner=="EMPATE"):
-    #llama a jugada para que le de una nueva mano al jugador
-        jugada(proxy)
-
 def jugada(proxy):
-    j=proxy.agrega_jugador(jugador)
+    j = proxy.agrega_jugador(jugador)
     print(j)
 
+def cambiar_nombre():
+    print("Actualmente te llamas {}".format(jugador))
+    respuesta = safe_int("¿Desea cambiar de nombre? \n 0 - No \n 1 - Sí", 1)
+    if respuesta == 1:
+        nombre_viejo = jugador
+        jugador = ""
+        while jugador == "":
+            jugador = input("Escribe tu nuevo nombre: (Nombre actual: {})".format(nombre_viejo))
+        print("Bien, humano. Ahora te llamas: {}".format(jugador))
+
+def safe_int( mensaje, opcion_max ):
+    while True:
+        respuesta = -1
+        while respuesta < 0 or respuesta > opcion_max:
+            try:
+                respuesta = int(input(mensaje))
+            except ValueError:
+                print("Eso no es un número")
+        return respuesta
+
+def check_play( proxy ):
+    while resultados == "":
+        resultados = proxy.ver_resultado()
+        if str(resultados) != "":
+            print(resultados)
+
 def main(jugador):
+    vacio = True
     print("Iniciamos!")
+    print("Primero crea tu jugada con 1")
+    print("pica 3 para obtener todos los jugadores")
+    print("pica 4 para iniciar el juego.")
     proxy = xmlrpc.client.ServerProxy('http://localhost:9000')
+    thread1 = threading.Thread(target = check_play, args = (proxy,))
+    thread1.start()
     try:
         opcion = 99
         while opcion != 0:
             opcion = despliega_menu()
-            if opcion == 0:
+            if opcion == 0: #Salir
                 break
-            if opcion == 1:
-                jugada(proxy)
-
-            if opcion == 2:
+            if opcion == 1 and vacio == False: #Iniciar jugada
+                cambiar_nombre()
+                jugada(proxy) #Aquí se agrega al jugador si no está y se le da una mano.
+            if opcion == 2: #Preguntar si hay más jugadores --> Imprime los jugadores que hay
                 n = proxy.numero_jugadores()
-                print("Jugadores:",n)
-            if opcion == 3:
+                print( "Jugadores:",n )
+            if opcion == 3: #Crear partida --> Me devuelve los jugadores que hay y sus manos.
+                vacio = False
                 d = proxy.deck()
                 print(d)
-            if opcion == 4:
+            if opcion == 4: #jugar
                 try:
-                    juez(d,proxy)
+                   ganador = ""
+                   while True:
+                        ganador = proxy.juez(d, proxy)
+                        if len(ganador) == "":
+                            print("EMPATE")
+                            jugada(proxy)
+                        else:
+                            break
                 except:
                     print("NO EXISTE PARTIDA")
+            if opcion == 6: #cambiar nombre
+                cambiar_nombre()
+                
         print("Saliendo")
 
     except ConnectionError:
@@ -79,7 +94,7 @@ def main(jugador):
 
 if __name__ == "__main__":
     parse =argparse.ArgumentParser()
-    parse.add_argument("-j","--jugador",dest="jugador",required=False,default="Fede")
+    parse.add_argument("-j","--jugador",dest="jugador",required=False,default="El-cacas")
     args = parse.parse_args()
     jugador = args.jugador
     main(jugador)
