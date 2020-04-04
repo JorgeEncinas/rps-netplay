@@ -102,7 +102,10 @@ def buscar_ganador( dict_survivors, proxy ):
     print("\n Jugadores Restantes")
     print(dict_jugrest)
     if len( dict_jugrest ) > 1:
-        print("\n Más de un jugador ganó!")
+        print("\n Más de un jugador sobrevivió!")
+        print("Jugadores empatados: ")
+        for k, v in dict_jugrest.items():
+            print(k)
         hay_ganador = 2
     elif len( dict_jugrest ) == 1:
         print("Alguien ganó!")
