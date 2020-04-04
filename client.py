@@ -91,27 +91,27 @@ def buscar_ganador( dict_survivors, proxy ):
     return hay_ganador, ganador, dict_jugrest
 
 def RPS2(manita, manota, dict_survivors):
+    print("Se enfrentan {} con {} contra {} con {}".format(manita[0], manita[1], manota[0], manota[1]))
     if (manita[1] == 'Piedra' and manota[1] == 'Papel'):
-        dict_survivors[manota[0]] -=1
-        print("{} se hizo pedazos a {}".format(str(manita[0]), str(manota[0])))
-
-    if (manita[1] == 'Piedra' and manota[1] == 'Tijera'):
         dict_survivors[manita[0]] -=1
         print("{} se hizo pedazos a {}".format(str(manota[0]), str(manita[0])))
+    if (manita[1] == 'Piedra' and manota[1] == 'Tijera'):
+        dict_survivors[manota[0]] -=1
+        print("{} se hizo pedazos a {}".format(str(manita[0]), str(manota[0])))
 
     if (manita[1] == 'Papel' and manota[1] == 'Piedra'):
+        dict_survivors[manota[0]] -=1
+        print("{} se hizo pedazos a {}".format(str(manota[0]), str(manita[0])))
+    if (manita[1] == 'Papel' and manota[1] == 'Tijera'):
         dict_survivors[manita[0]] -=1
         print("{} se hizo pedazos a {}".format(str(manita[0]), str(manota[0])))
-    if (manita[1] == 'Papel' and manota[1] == 'Tijera'):
-        dict_survivors[manota[0]] -=1
-        print("{} se hizo pedazos a {}".format(str(manota[0]), str(manita[0])))
 
     if (manita[1] == 'Tijera' and manota[1] == 'Piedra'):
-        dict_survivors[manota[0]] -=1
-        print("{} se hizo pedazos a {}".format(str(manita[0]), str(manota[0])))
-    if (manita[1] == 'Tijera' and manota[1] == 'Papel'):
         dict_survivors[manita[0]] -= 1
         print("{} se hizo pedazos a {}".format(str(manota[0]), str(manita[0])))
+    if (manita[1] == 'Tijera' and manota[1] == 'Papel'):
+        dict_survivors[manota[0]] -= 1
+        print("{} se hizo pedazos a {}".format(str(manita[0]), str(manota[0])))
 
 def jugada(proxy, jugador):
     j=proxy.agrega_jugador(jugador)
