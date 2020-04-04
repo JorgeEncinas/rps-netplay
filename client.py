@@ -39,6 +39,7 @@ def gen_game_data( jugadores, proxy, primera_vez ): # d = jugadores = proxy.deck
     if not primera_vez:
         for k, v in jugadores.items():
             jugada(proxy, k)
+            jugadores = proxy.deck()
     tuplas=jugadores.items()
     participes=[]
     dict_survivors = dict()
