@@ -62,7 +62,6 @@ def main():
     server.register_function(numero_jugadores)
     server.register_function(deck)
     server.register_function(quitar_perdedores)
-    server.register_function(borrar_jugador)
     # Start the server
     try:
         print('Usa Control-C para salir')

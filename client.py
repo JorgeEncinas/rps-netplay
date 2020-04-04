@@ -72,15 +72,12 @@ def gen_game_data( jugadores, proxy, primera_vez ): # d = jugadores = proxy.deck
 
 def judgement_time( proxy, participes, dict_survivors ):
     ''' Compara iterativamente las manos y regresa el ganador '''
-    print("Judgement Time!")
+    print("Judgement Time! \n")
     for player in participes:
         for opponent in participes[1:]:
             if dict_survivors[opponent[0]] > 0 and player[0] != opponent[0]:
-                print("Entrando a los chingazos!")
                 RPS2(player, opponent, dict_survivors)
-                print(dict_survivors)
     hay_ganador, ganador, jugadores = buscar_ganador( dict_survivors, proxy )
-    print("El valor de hay ganador es: {}".format(hay_ganador))
     if hay_ganador == 1:
         print("EL GANADOR ES... ", ganador)
     elif hay_ganador == 2:
@@ -89,12 +86,12 @@ def judgement_time( proxy, participes, dict_survivors ):
     elif hay_ganador == 0:
         print("EMPATE")
     else:
-        print("El que programó esta función es tonto chaval tío")
+        print("El que programó esto lo hizo mal")
 
 def buscar_ganador( dict_survivors, proxy ):
     ''' Revisa el diccionario con sobrevivientes, deshaciéndose de cada jugador que haya perdido.  \
     Regresa si hay ganador, quién es, y/o quienes quedan'''
-    print("Buscando ganador!")
+    print("Buscando ganador! \n")
     ganador = ""
     delet_this = []
     hay_ganador = -1
@@ -105,7 +102,7 @@ def buscar_ganador( dict_survivors, proxy ):
     print("\n Jugadores Restantes")
     print(dict_jugrest)
     if len( dict_jugrest ) > 1:
-        print("Más de un jugador ganó!")
+        print("\n Más de un jugador ganó!")
         hay_ganador = 2
     elif len( dict_jugrest ) == 1:
         print("Alguien ganó!")
@@ -120,24 +117,24 @@ def RPS2(manita, manota, dict_survivors):
     ''' Compara singularmente dos oponentes, restándole un punto al perdedor.'''
     if (manita[1] == 'Piedra' and manota[1] == 'Papel'):
         dict_survivors[manita[0]] -=1
-        print("{} se hizo pedazos a {} \n".format(manota[0], manita[0]))
+        print("{} hizo pedazos a {} \n".format(manota[0], manita[0]))
     if (manita[1] == 'Piedra' and manota[1] == 'Tijera'):
         dict_survivors[manota[0]] -=1
-        print("{} se hizo pedazos a {}".format(manita[0], manota[0]))
+        print("{} hizo pedazos a {}".format(manita[0], manota[0]))
 
     if (manita[1] == 'Papel' and manota[1] == 'Piedra'):
         dict_survivors[manota[0]] -=1
-        print("{} se hizo pedazos a {}".format(manota[0], manita[0]))
+        print("{} hizo pedazos a {}".format(manota[0], manita[0]))
     if (manita[1] == 'Papel' and manota[1] == 'Tijera'):
         dict_survivors[manita[0]] -=1
-        print("{} se hizo pedazos a {}".format(manita[0], manota[0]))
+        print("{} hizo pedazos a {}".format(manita[0], manota[0]))
 
     if (manita[1] == 'Tijera' and manota[1] == 'Piedra'):
         dict_survivors[manita[0]] -= 1
-        print("{} se hizo pedazos a {}".format(manota[0], manita[0]))
+        print("{} hizo pedazos a {}".format(manota[0], manita[0]))
     if (manita[1] == 'Tijera' and manota[1] == 'Papel'):
         dict_survivors[manota[0]] -= 1
-        print("{} se hizo pedazos a {}".format(manita[0], manota[0]))
+        print("{} hizo pedazos a {}".format(manita[0], manota[0]))
 
 def jugada(proxy, jugador):
     ''' Le da una mano a un solo jugador '''
