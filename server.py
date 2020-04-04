@@ -3,7 +3,6 @@ from xmlrpc.server import SimpleXMLRPCServer
 import logging
 import random
 
-
 class Juego:
     jugadores = None
     opciones = None
@@ -27,25 +26,31 @@ server = SimpleXMLRPCServer(
     )
 j = Juego()
 
-
 def agrega_jugador(jugador):
     resultado = j.mano(jugador)
     print(resultado)
     return resultado
 
-
 def numero_jugadores():
     return len(j.jugadores)
 
+def limpiar_jugadores():
+    for k, v in list(j.jugadores):
+        del jugadores[k]
+
+def quitar_perdedores( delete_list ):
+    for key in delete_list:
+        del j.jugadores[key]
+    return j.jugadores
 
 def deck():
     return j.jugadores
-
 
 def main():
     server.register_function(agrega_jugador)
     server.register_function(numero_jugadores)
     server.register_function(deck)
+    server.register_function(quitar_perdedores)
     # Start the server
     try:
         print('Usa Control-C para salir')
