@@ -1,5 +1,5 @@
 # Importante
-La versión final está en la branch "multiplayer"
+La versión final ya está en la branch "master"
 
 # rps-netplay
 
