@@ -1,3 +1,6 @@
+# Importante
+La versión final está en la branch "multiplayer"
+
 # rps-netplay
 
 En esta tarea, deben lograr que funcione correctamente el siguiente juego interactivo de "Piedra, Papel o Tijera",
