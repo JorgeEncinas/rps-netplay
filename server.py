@@ -1,8 +1,18 @@
 #!/usr/bin/python
+# Integrantes del equipo:
+#   Alcaraz Biebrich Manuel Alejandro
+#   Encinas Alegre Jorge Carlos
+#   Romero Andrade Paula Cristina
+# Fecha: 3 de Abril de 2020
+#
+# Descripción de Modo de uso:
+#  Se ejecuta este programa y se le mantiene de fondo antes de ejecutar cliente.py
+#  Cada método describe su función particular.
+#  Al iniciarse, el servidor registra las funciones que se utilizarán
+
 from xmlrpc.server import SimpleXMLRPCServer
 import logging
 import random
-
 
 class Juego:
     jugadores = None
@@ -27,25 +37,31 @@ server = SimpleXMLRPCServer(
     )
 j = Juego()
 
-
 def agrega_jugador(jugador):
+    ''' Agrega un jugador al diccionario de j y devuelve su mano '''
     resultado = j.mano(jugador)
     print(resultado)
     return resultado
 
-
 def numero_jugadores():
+    ''' Regresa la cantidad de jugadores '''
     return len(j.jugadores)
 
-
-def deck():
+def quitar_perdedores( delete_list ):
+    ''' Recibe una lista con los jugadores perdedores y los quita del diccionario de jugadores. Regresa el nuevo diccionario.'''
+    for key in delete_list:
+        del j.jugadores[key]
     return j.jugadores
 
+def deck():
+    ''' Regresa el diccionario de jugadores '''
+    return j.jugadores
 
 def main():
     server.register_function(agrega_jugador)
     server.register_function(numero_jugadores)
     server.register_function(deck)
+    server.register_function(quitar_perdedores)
     # Start the server
     try:
         print('Usa Control-C para salir')
